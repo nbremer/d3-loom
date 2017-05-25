@@ -15,13 +15,13 @@
 		var padAngle = 0,
 			sortGroups = null,
 			sortSubgroups = null,
-			sortStrings = null,
+			sortLooms = null,
 			emptyPerc = 0.2,
 			heightInner = 20,
-			widthOffsetInner = function() { return x; },
-			value = function(d) { return d; },
-			inner = function(d) { return d.source; },
-			outer = function(d) { return d.target; };
+			widthOffsetInner = function() { return 30; },
+			value = function(d) { return d.value; },
+			inner = function(d) { return d.inner; },
+			outer = function(d) { return d.outer; };
 
 		function loom(data) {
 
@@ -177,7 +177,7 @@
 				}//for j
 			}//for i
 
-			return sortStrings ? looms.sort(sortStrings) : looms;
+			return sortLooms ? looms.sort(sortLooms) : looms;
 		}//function loom
 
 		function searchTerm(term, property, arrayToSearch){
@@ -228,8 +228,8 @@
 			return arguments.length ? (sortSubgroups = _, loom) : sortSubgroups;
 		};
 
-		loom.sortBands = function(_) {
-			return arguments.length ? (_ == null ? sortBands = null : (sortBands = compareValue(_))._ = _, loom) : sortBands && sortBands._;
+		loom.sortLooms = function(_) {
+			return arguments.length ? (_ == null ? sortLooms = null : (sortLooms = compareValue(_))._ = _, loom) : sortLooms && sortLooms._;
 		};
 
 		return loom;
