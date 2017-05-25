@@ -54,7 +54,7 @@ And the outer has the following properties:
 * `innername` - the [name](#loom_inner) of the connected inner entity
 * `outername` - the [name](#loom_outer) of the outer entity
 
-The looms are passed to [d3.string](#string) to display the relationships between the inner and outer entities.
+The *looms* are passed to [d3.string](#string) to display the relationships between the inner and outer entities.
 
 The *looms* array also defines a two secondary arrays. The first, called *groups*, is an array represting the outer entities. The length of the array is the number of unique outer entities and is an object with the following properties:
 
@@ -75,11 +75,11 @@ The other array, called, *innergroups*, is an array represting the inner entitie
 
 The *innergroups* are used to create the textual representation of the inner entities in the center of the loom layout.
 
-<a href="#loom_padAngle" name="#loom_padAngle">#</a> <i>loom</i>.<b>padAngle</b>([<i>angle</i>]) [<>](https://github.com/nbremer/d3-loom/blob/master/loom.js#L195 "Source")
+<a href="#loom_padAngle" name="loom_padAngle">#</a> <i>loom</i>.<b>padAngle</b>([<i>angle</i>]) [<>](https://github.com/nbremer/d3-loom/blob/master/loom.js#L195 "Source")
 
 If *angle* is specified, sets the pad angle between adjacent groups to the specified number in radians and returns this loom layout. If *angle* is not specified, returns the current pad angle, which defaults to zero.
 
-<a href="#loom_inner" name="#loom_inner">#</a> <i>loom</i>.<b>inner</b>([<i>inner</i>]) [<>](https://github.com/nbremer/d3-loom/blob/master/loom.js#L199 "Source")
+<a href="#loom_inner" name="loom_inner">#</a> <i>loom</i>.<b>inner</b>([<i>inner</i>]) [<>](https://github.com/nbremer/d3-loom/blob/master/loom.js#L199 "Source")
 
 The *inner* represents the name/id/... textual value of the entities that will be placed in the center. If *inner* is specified, sets the inner accessor to the specified function and returns this string generator. If *inner* is not specified, returns the current inner accessor, which defaults to:
 
@@ -89,7 +89,7 @@ function inner(d) {
 }
 ```
 
-<a href="#loom_outer" name="#loom_outer">#</a> <i>loom</i>.<b>outer</b>([<i>outer</i>]) [<>](https://github.com/nbremer/d3-loom/blob/master/loom.js#L203 "Source")
+<a href="#loom_outer" name="loom_outer">#</a> <i>loom</i>.<b>outer</b>([<i>outer</i>]) [<>](https://github.com/nbremer/d3-loom/blob/master/loom.js#L203 "Source")
 
 The *outer* represents the name/id/... textual value of the entities that will be placed around the loom along a circle. If *outer* is specified, sets the outer accessor to the specified function and returns this string generator. If *outer* is not specified, returns the current outer accessor, which defaults to:
 
@@ -99,7 +99,7 @@ function outer(d) {
 }
 ```
 
-<a href="#loom_value" name="#loom_value">#</a> <i>loom</i>.<b>value</b>([<i>value</i>]) [<>](https://github.com/nbremer/d3-loom/blob/master/loom.js#L207 "Source")
+<a href="#loom_value" name="loom_value">#</a> <i>loom</i>.<b>value</b>([<i>value</i>]) [<>](https://github.com/nbremer/d3-loom/blob/master/loom.js#L207 "Source")
 
 The *value* represents the numeric value that is the connection between the inner and outer entity. It is the value that determines the width of the strings on the outside. If *value* is specified, sets the value accessor to the specified function and returns this string generator. If *value* is not specified, returns the current value accessor, which defaults to:
 
@@ -109,11 +109,11 @@ function value(d) {
 }
 ```
 
-<a href="#loom_heightInner" name="#loom_heightInner">#</a> <i>loom</i>.<b>heightInner</b>([<i>height</i>]) [<>](https://github.com/nbremer/d3-loom/blob/master/loom.js#L211 "Source")
+<a href="#loom_heightInner" name="loom_heightInner">#</a> <i>loom</i>.<b>heightInner</b>([<i>height</i>]) [<>](https://github.com/nbremer/d3-loom/blob/master/loom.js#L211 "Source")
 
 This *height* gives the vertical distance between the inner entities in the center. It is the value that determines the width of the strings on the outside. If *height* is specified, sets the heightInner to the specified number and returns this loom generator. If height is not specified, returns the current heightInner value, which defaults to 20.
 
-<a href="#loom_widthOffsetInner" name="#loom_widthOffsetInner">#</a> <i>loom</i>.<b>widthOffsetInner</b>([<i>width</i>]) [<>](https://github.com/nbremer/d3-loom/blob/master/loom.js#L215 "Source")
+<a href="#loom_widthOffsetInner" name="loom_widthOffsetInner">#</a> <i>loom</i>.<b>widthOffsetInner</b>([<i>width</i>]) [<>](https://github.com/nbremer/d3-loom/blob/master/loom.js#L215 "Source")
 
 This *width* gives the horizontal distance between the inner entities in the center. It is the value that determines the width of the strings on the outside. If *width* is specified, sets the widthOffsetInner to the specified function or number and returns this loom generator. If width is not specified, returns the current widthOffsetInner accessor, which defaults to:
 
@@ -123,19 +123,19 @@ function widthOffsetInner() {
 }
 ```
 
-<a href="#loom_emptyPerc" name="#loom_emptyPerc">#</a> <i>loom</i>.<b>emptyPerc</b>([<i>value</i>]) [<>](https://github.com/nbremer/d3-loom/blob/master/loom.js#L219 "Source")
+<a href="#loom_emptyPerc" name="loom_emptyPerc">#</a> <i>loom</i>.<b>emptyPerc</b>([<i>value</i>]) [<>](https://github.com/nbremer/d3-loom/blob/master/loom.js#L219 "Source")
 
 This *value* gives the percentage of the circle that will be empty to create space in the top and bottom. If *value* is specified, sets the current emptyPerc to the specified number in the range [0,1] and returns this loom generator. If value is not specified, returns the current emptyPerc value, which defaults to 0.2.
 
-<a href="#loom_sortGroups" name="#loom_sortGroups">#</a> <i>loom</i>.<b>sortGroups</b>([<i>compare</i>]) [<>](https://github.com/nbremer/d3-loom/blob/master/loom.js#L223 "Source")
+<a href="#loom_sortGroups" name="loom_sortGroups">#</a> <i>loom</i>.<b>sortGroups</b>([<i>compare</i>]) [<>](https://github.com/nbremer/d3-loom/blob/master/loom.js#L223 "Source")
 
 If *compare* is specified, sets the group comparator to the specified function or null and returns this loom layout. If *compare* is not specified, returns the current group comparator, which defaults to null. If the group comparator is non-null, it is used to sort the outer groups/entities by their total value (i.e. the sum of all the inner strings). See also [d3.ascending](https://github.com/d3/d3-array#ascending) and [d3.descending](https://github.com/d3/d3-array#descending).
 
-<a href="#loom_sortSubgroups" name="#loom_sortSubgroups">#</a> <i>loom</i>.<b>sortSubgroups</b>([<i>compare</i>]) [<>](https://github.com/nbremer/d3-loom/blob/master/loom.js#L227 "Source")
+<a href="#loom_sortSubgroups" name="loom_sortSubgroups">#</a> <i>loom</i>.<b>sortSubgroups</b>([<i>compare</i>]) [<>](https://github.com/nbremer/d3-loom/blob/master/loom.js#L227 "Source")
 
 If *compare* is specified, sets the subgroup comparator to the specified function or null and returns this loom layout. If *compare* is not specified, returns the current subgroup comparator, which defaults to null. If the subgroup comparator is non-null, it is used to sort the subgroups (i.e. the separate strings) within each outer entity by their value. See also [d3.ascending](https://github.com/d3/d3-array#ascending) and [d3.descending](https://github.com/d3/d3-array#descending).
 
-<a href="#chord_sortLooms" name="#chord_sortLooms">#</a> <i>chord</i>.<b>sortLooms</b>([<i>compare</i>]) [<>](https://github.com/nbremer/d3-loom/blob/master/loom.js#L231 "Source")
+<a href="#loom_sortLooms" name="loom_sortLooms">#</a> <i>chord</i>.<b>sortLooms</b>([<i>compare</i>]) [<>](https://github.com/nbremer/d3-loom/blob/master/loom.js#L231 "Source")
 
 If *compare* is specified, sets the loom comparator to the specified function or null and returns this loom layout. If *compare* is not specified, returns the current loom comparator, which defaults to null. If the loom comparator is non-null, it is used to sort the [looms](#_loom) by their total value; this only affects the *z*-order of the looms. See also [d3.ascending](https://github.com/d3/d3-array#ascending) and [d3.descending](https://github.com/d3/d3-array#descending).
 
