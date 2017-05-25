@@ -135,13 +135,17 @@ If *compare* is specified, sets the group comparator to the specified function o
 
 If *compare* is specified, sets the subgroup comparator to the specified function or null and returns this loom layout. If *compare* is not specified, returns the current subgroup comparator, which defaults to null. If the subgroup comparator is non-null, it is used to sort the subgroups (i.e. the separate strings) within each outer entity by their value. See also [d3.ascending](https://github.com/d3/d3-array#ascending) and [d3.descending](https://github.com/d3/d3-array#descending).
 
-<a href="#loom_sortLooms" name="loom_sortLooms">#</a> <i>chord</i>.<b>sortLooms</b>([<i>compare</i>]) [<>](https://github.com/nbremer/d3-loom/blob/master/loom.js#L231 "Source")
+<a href="#loom_sortLooms" name="loom_sortLooms">#</a> <i>loom</i>.<b>sortLooms</b>([<i>compare</i>]) [<>](https://github.com/nbremer/d3-loom/blob/master/loom.js#L231 "Source")
 
-If *compare* is specified, sets the loom comparator to the specified function or null and returns this loom layout. If *compare* is not specified, returns the current loom comparator, which defaults to null. If the loom comparator is non-null, it is used to sort the [looms](#_loom) by their total value; this only affects the *z*-order of the looms. See also [d3.ascending](https://github.com/d3/d3-array#ascending) and [d3.descending](https://github.com/d3/d3-array#descending).
+If *compare* is specified, sets the loom comparator to the specified function or null and returns this loom layout. If *compare* is not specified, returns the current loom comparator, which defaults to null. If the loom comparator is non-null, it is used to sort the [strings](#_loom) by their value; this only affects the *z*-order of these inner strings. See also [d3.ascending](https://github.com/d3/d3-array#ascending) and [d3.descending](https://github.com/d3/d3-array#descending).
 
 <a href="#string" name="string">#</a> d3.<b>string</b>() [<>](https://github.com/nbremer/d3-loom/blob/master/loom.js#L240 "Source")
 
 Creates a new string generator with the default settings.
+
+<a href="#_string" name="_string">#</a> <i>string</i>(<i>arguments…</i>) [<>](https://github.com/nbremer/d3-loom/blob/master/loom.js#L263 "Source")
+
+Generates a string for the given *arguments*. The *arguments* are arbitrary; they are simply propagated to the string's generator's accessor functions along with the `this` object. If the string generator has a context, then the string is rendered to this context as a sequence of path method calls and this function returns void. Otherwise, a path data string is returned.
 
 <!-- 
 
@@ -169,8 +173,8 @@ Creates a new string generator with the default settings.
 			return arguments.length ? (offset = _, string) : offset;
 		};
 
-		string.heightInner = function(_) {
-			return arguments.length ? (heightInner = _, string) : heightInner;
+		string.thicknessInner = function(_) {
+			return arguments.length ? (thicknessInner = _, string) : thicknessInner;
 		};
 
 		string.inner = function(_) {

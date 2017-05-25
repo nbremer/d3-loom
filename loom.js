@@ -257,7 +257,7 @@
 			y = function (d) { return d.y; },
 			offset = function (d) { return d.offset; },
 			pullout = 50,
-			heightInner = 0, 
+			thicknessInner = 0, 
 			context = null;
 
 		function string() {
@@ -290,7 +290,7 @@
 			if(leftHalf) toffset = -toffset;
 			tx = tx + toffset;
 			//And the height of the end point
-			theight = leftHalf ? -heightInner : heightInner;
+			theight = leftHalf ? -thicknessInner : thicknessInner;
 			
 
 			if (!context) context = buffer = d3.path();
@@ -364,8 +364,8 @@
 			return arguments.length ? (offset = _, string) : offset;
 		};
 
-		string.heightInner = function(_) {
-			return arguments.length ? (heightInner = _, string) : heightInner;
+		string.thicknessInner = function(_) {
+			return arguments.length ? (thicknessInner = _, string) : thicknessInner;
 		};
 
 		string.inner = function(_) {
