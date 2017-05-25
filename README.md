@@ -40,17 +40,17 @@ The return value of *loom*(*data*) is an array of *looms*, where each loom repre
 Both the inner and outer subgroup are also objects. The inner has the following properties:
 
 * `name` - the [name](#loom_inner) of the inner entity
-* `offset` - the [horizontal offset](#loom_offset) of the inner string's endpoint
+* `offset` - the [horizontal offset](#loom_heightInner) of the inner string's endpoint
 * `x` - the horizontal location of the inner entity
 * `y` - the vertical location of the inner entity
 
 And the outer has the following properties:
 
-* `startAngle` - the [start angle](#loom_startAngle) of the arc in radians
-* `endAngle` - the [end angle](#loom_endAngle) of the arc in radians
+* `startAngle` - the [start angle](#string_startAngle) of the arc in radians
+* `endAngle` - the [end angle](#string_endAngle) of the arc in radians
 * `value` - the numeric [value](#loom_value) of the arc
-* `index` - the zero-based [sorted index](#loom_sort) of the arc
-* `subindex` - the zero-based [sorted sub-index](#loom_sub_sort) of the arc
+* `index` - the zero-based [sorted index](#loom_sortGroups) of the arc
+* `subindex` - the zero-based [sorted sub-index](#loom_sortSubgroups) of the arc
 * `innername` - the [name](#loom_inner) of the connected inner entity
 * `outername` - the [name](#loom_outer) of the outer entity
 
@@ -58,10 +58,10 @@ The *looms* are passed to [d3.string](#string) to display the relationships betw
 
 The *looms* array also defines a two secondary arrays. The first, called *groups*, is an array represting the outer entities. The length of the array is the number of unique outer entities and is an object with the following properties:
 
-* `startAngle` - the [start angle](#loom_startAngle) of the arc in radians
-* `endAngle` - the [end angle](#loom_endAngle) of the arc in radians
+* `startAngle` - the [start angle](#string_startAngle) of the arc in radians
+* `endAngle` - the [end angle](#string_endAngle) of the arc in radians
 * `value` - the numeric [value](#loom_value) of the arc
-* `index` - the zero-based [sorted index](#loom_sort) of the arc
+* `index` - the zero-based [sorted index](#loom_sortGroups) of the arc
 * `outername` - the [name](#loom_outer) of the outer entity
 
 The *groups* are passed to [d3.arc](https://github.com/d3/d3-shape#arc) to produce a donut chart around the circumference of the loom layout.
@@ -69,7 +69,7 @@ The *groups* are passed to [d3.arc](https://github.com/d3/d3-shape#arc) to produ
 The other array, called, *innergroups*, is an array represting the inner entities. The length of the array is the number of unique inner entities and is an object with the following properties:
 
 * `name` - the [name](#loom_inner) of the inner entity
-* `offset` - the [horizontal offset](#loom_offset) of the inner string's endpoint
+* `offset` - the [horizontal offset](#loom_heightInner) of the inner string's endpoint
 * `x` - the horizontal location of the inner entity
 * `y` - the vertical location of the inner entity
 
