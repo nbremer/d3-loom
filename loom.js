@@ -18,7 +18,7 @@
 			sortLooms = null,
 			emptyPerc = 0.2,
 			heightInner = 20,
-			widthOffsetInner = function() { return 30; },
+			widthInner = function() { return 30; },
 			value = function(d) { return d.value; },
 			inner = function(d) { return d.inner; },
 			outer = function(d) { return d.outer; };
@@ -157,7 +157,7 @@
 			for(i = 0; i < m; i++) {
 				uniqueInner[i].x = 0;
 				uniqueInner[i].y = -m*heightInner/2 + i*heightInner;
-				uniqueInner[i].offset = widthOffsetInner(uniqueInner[i].name, i, uniqueInner);
+				uniqueInner[i].offset = widthInner(uniqueInner[i].name, i, uniqueInner);
 			}//for i
 	  			
 			//Generate bands for each (non-empty) subgroup-subgroup link
@@ -212,8 +212,8 @@
 			return arguments.length ? (heightInner = _, loom) : heightInner;
 		};
 
-		loom.widthOffsetInner = function(_) {
-			return arguments.length ? (widthOffsetInner = typeof _ === "function" ? _ : constant$11(+_), loom) : widthOffsetInner;
+		loom.widthInner = function(_) {
+			return arguments.length ? (widthInner = typeof _ === "function" ? _ : constant$11(+_), loom) : widthInner;
 		};
 
 		loom.emptyPerc = function(_) {

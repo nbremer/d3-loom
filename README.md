@@ -40,7 +40,7 @@ The return value of *loom*(*data*) is an array of *looms*, where each loom repre
 Both the inner and outer subgroup are also objects. The inner has the following properties:
 
 * `name` - the [name](#loom_inner) of the inner entity
-* `offset` - the [horizontal offset](#loom_heightInner) of the inner string's endpoint
+* `offset` - the [horizontal offset](#loom_widthInner) of the inner string's endpoint from the center
 * `x` - the horizontal location of the inner entity
 * `y` - the vertical location of the inner entity
 
@@ -69,7 +69,7 @@ The *groups* are passed to [d3.arc](https://github.com/d3/d3-shape#arc) to produ
 The other array, called, *innergroups*, is an array represting the inner entities. The length of the array is the number of unique inner entities and is an object with the following properties:
 
 * `name` - the [name](#loom_inner) of the inner entity
-* `offset` - the [horizontal offset](#loom_heightInner) of the inner string's endpoint
+* `offset` - the [horizontal offset](#loom_widthInner) of the inner string's endpoint from the center
 * `x` - the horizontal location of the inner entity
 * `y` - the vertical location of the inner entity
 
@@ -113,12 +113,12 @@ function value(d) {
 
 This *height* gives the vertical distance between the inner entities in the center. It is the value that determines the width of the strings on the outside. If *height* is specified, sets the heightInner to the specified number and returns this loom generator. If height is not specified, returns the current heightInner value, which defaults to 20.
 
-<a href="#loom_widthOffsetInner" name="loom_widthOffsetInner">#</a> <i>loom</i>.<b>widthOffsetInner</b>([<i>width</i>]) [<>](https://github.com/nbremer/d3-loom/blob/master/loom.js#L215 "Source")
+<a href="#loom_widthInner" name="loom_widthInner">#</a> <i>loom</i>.<b>widthInner</b>([<i>width</i>]) [<>](https://github.com/nbremer/d3-loom/blob/master/loom.js#L215 "Source")
 
-This *width* gives the horizontal distance between the inner entities in the center. It is the value that determines the width of the strings on the outside. If *width* is specified, sets the widthOffsetInner to the specified function or number and returns this loom generator. If width is not specified, returns the current widthOffsetInner accessor, which defaults to:
+This *width* gives the horizontal distance between the inner entities in the center. It is the value that determines the width of the strings on the outside. If *width* is specified, sets the widthInner to the specified function or number and returns this loom generator. If width is not specified, returns the current widthInner accessor, which defaults to:
 
 ```js
-function widthOffsetInner() {
+function widthInner() {
   return 30;
 }
 ```
