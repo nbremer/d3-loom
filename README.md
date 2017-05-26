@@ -10,6 +10,10 @@ For example, in the above image, the inner entities are the characters of the Fe
 
 Since this layout was transformed from d3's [chord diagram](https://github.com/d3/d3-chord/blob/master/README.md) many of the below API references will be similar to those from the chord diagram for the *loom* and similar to the ribbon functions for the *string*.
 
+## Note
+
+One thing that I have not (yet) figured out is how to sort the outer groups/entities in such a way to automatically make a visually appealing split in 2 separate halves. This is only relevant when you specify an [empty percentage](#loom_emptyPerc), thus create a gap in the top and bottom. For now you will have to manually order the outer entities in such a way that when split into two groups, the total value of those two groups separately lies close to 50%. However, you don't need to have the exact number of entities on the left half as on the right. The program will try and find a split that separates all the entities in two groups to make them both as close to 50% as possible, but it will not reorder the groups to do so.
+
 ## Installing
 
 You must include the [d3 library](http://d3js.org/) before including the loom file. Then you can add the loom.js file to your website
@@ -24,6 +28,11 @@ var loom = d3.loom();
 
 </script>
 ```
+
+## Feedback
+
+This is my first attempt at a plugin and it has definitely not been tested well enough. I would therefore love to hear from you about any bugs or errors that you run into while trying to use the plugin. You can create an Issue right here, reach me on Twitter via [@NadiehBremer](https://www.twitter.com/NadiehBremer) or mail me on info *at* visualcinnamon.com
+
 
 ## API Reference
 
