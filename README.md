@@ -1,8 +1,29 @@
 # d3-loom
 
-This is, sort of, a d3 plugin to create a "loom" visualization
+This is a d3 plugin to create a "loom" visualization. I don't actually know node.js, thereby no npm, so if you feel this repo isn't a fully fledged plugin, because it's missing a lot of files (and isn't on npm), I'm fine with that. I just wanted to share a way for others to make use of a new chart layout in d3 that was within my abilities (but any help in turning this into a proper plugin would be appreciated!).
 
-[![The words spoken by the Fellowship member during all 3 movies](lotr.png "The words spoken by the Fellowship member during all 3 movies")](http://bl.ocks.org/nbremer/6599644129c034d0cb17fcdc452c310b)
+[![The words spoken by the Fellowship member during all 3 movies](lotr.png "The words spoken by the Fellowship member during all 3 movies")](https://bl.ocks.org/nbremer/4530f11952a3ef7e007ad6ef93d5adb3)
+
+The loom layout is meant to create a chart with a group of entities in the center and different group of entities on the outside. They are connected by strings where the thickness of the string on the outside represents the connection (i.e. value) of the inner and outer entity.
+
+For example, in the above image, the inner entities are the characters of the Fellowship in the Lord of the Rings movies. The outer entities are the locations in Middle Earth where the movie takes place. The connection/value is the number of words spoken by each character at each location.
+
+Since this layout was transformed from d3's [chord diagram](https://github.com/d3/d3-chord/blob/master/README.md) many of the below API references will be similar to those from the chord diagram for the *loom* and similar to the ribbon functions for the *string*.
+
+## Installing
+
+You must include the [d3 library](http://d3js.org/) before including the loom file. Then you can add the loom.js file to your website
+
+```html
+<script src="https://d3js.org/d3.v4.min.js"></script>
+<script src="loom.js"></script>
+
+<script>
+
+var loom = d3.loom();
+
+</script>
+```
 
 ## API Reference
 
@@ -141,7 +162,7 @@ Creates a new string generator with the default settings.
 
 Generates a string for the given *arguments*. The *arguments* are arbitrary; they are simply propagated to the string's generator's accessor functions along with the `this` object. If the string generator has a context, then the string is rendered to this context as a sequence of path method calls and this function returns void. Otherwise, a path data string is returned.
 
-Typically, only the [radius](#string_radius), [thicknessInner](#string_thicknessInner), and [pullOut](#string_pullOut) should be adjusted when used on conjunction with the [loom](#loom), because all the other accessors will work with the default settings.
+Typically, only the [radius](#string_radius), [thicknessInner](#string_thicknessInner), and [pullout](#string_pullout) should be adjusted when used on conjunction with the [loom](#loom), because all the other accessors will work with the default settings.
 
 <a href="#string_radius" name="string_radius">#</a> <i>string</i>.<b>radius</b>([<i>radius</i>]) [<>](https://github.com/nbremer/d3-loom/blob/master/loom.js#L343 "Source")
 
