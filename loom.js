@@ -250,7 +250,7 @@
 
 		var inner = function (d) { return d.inner; },
 			outer = function (d) { return d.outer; },
-			radius = function (d) { return d.radius; },
+			radius = function (d) { return 100; },
 			startAngle = function (d) { return d.startAngle; },
 			endAngle = function (d) { return d.endAngle; },
 			x = function (d) { return d.x; },
