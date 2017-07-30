@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+	<head>
+		<meta charset="utf-8">
+		<link href="https://fonts.googleapis.com/css?family=Macondo+Swash+Caps|Macondo" rel="stylesheet">
+		<link href="https://fonts.googleapis.com/css?family=Cormorant:300,400" rel="stylesheet">
+		
+		<style>
+			html { 
+				font-size: 61%; 
+			} 
+
+			body {
+				font-family: 'Cormorant', serif;
+				font-size: 1.2rem;
+				fill: #b9b9b9;
+			}
+
+			#chart {
+				text-align: center;
+			}
+
+			.string-wrapper {
+				isolation: isolate;
+			}
+
+			.string {
+				 mix-blend-mode: multiply; 
+			}
+						
+			.inner-label {
+				font-family: 'Macondo Swash Caps', cursive;
+				font-size: 1.4rem;
+				fill: #232323;
+				cursor: default;
+				text-anchor: middle;
+			}
+
+			.outer-label {
+				font-family: 'Macondo', cursive;
+				font-size: 1.6rem;
+				fill: #5f5f5f;
+				cursor: default;
+			}
+
+			.outer-label-value {
+				font-size: 1.2rem;
+				fill: #b9b9b9;
+			}
+		</style>
+		
+		<script src="https://d3js.org/d3.v4.min.js"></script>
+		<script src="../loom.js"></script>
+	</head>
+	<body>
+		<div id="chart"></div>
+
+		<script>
+			////////////////////////////////////////////////////////////
+			////////////////////// Create SVG //////////////////////////
+			////////////////////////////////////////////////////////////
+
+			var margin = {left:120, top:50, right:120, bottom:50},
+				width = 710,
+				height = 600,
+				innerRadius = 244,
+				outerRadius = innerRadius * 1.05;
+						
+			var svg = d3.select("#chart").append("svg")
+				.attr("width", width + margin.left + margin.right)
+				.attr("height", height + margin.top + margin.bottom);
+
+			////////////////////////////////////////////////////////////
+			/////////////////// Set-up Loom parameters /////////////////
+			////////////////////////////////////////////////////////////
+				
+			//Some default parameters
+			var pullOutSize = 20 + 30/135 * innerRadius;
+			var numFormat = d3.format(",.0f");
+
+			//Manually sorted the inner characters based on the total number of words spoken
+			var characterOrder = ["Gandalf", "Sam", "Aragorn", "Frodo", "Gimli", "Pippin", "Merry", "Boromir", "Legolas"]
+			function sortCharacter(a, b) { return characterOrder.indexOf(a) - characterOrder.indexOf(b); }
+
+			//Initiate the loom function with all the options
+			var loom = d3.loom()
+			    .padAngle(0.05)
+				.sortSubgroups(sortCharacter)
+				.heightInner(20)
+				.emptyPerc(0.20)
+				.widthInner(30)
+				.value(function(d) { return d.words; })
+				.inner(function(d) { return d.character; })
+				.outer(function(d) { return d.location; })
+
+			//Initiate the inner string function that belongs to the loom
+			var string = d3.string()
+				.radius(innerRadius)
+				.pullout(pullOutSize);
+
+			//Initiate an arc drawing function that is also needed
+			var arc = d3.arc()
+				.innerRadius(innerRadius*1.01)
+				.outerRadius(outerRadius);
+
+			////////////////////////////////////////////////////////////
+			///////////////////////// Colors ///////////////////////////
+			////////////////////////////////////////////////////////////
+								
+			//Color for the unique locations
+			var locations = ["Bree", "Emyn Muil", "Fangorn", "Gondor",  "Isengard", "Lothlorien", "Misty Mountains", "Mordor",  "Moria",   "Parth Galen", "Rivendell", "Rohan",   "The Shire"];
+			var colors = ["#5a3511", "#47635f",   "#223e15", "#C6CAC9", "#0d1e25",  "#53821a",    "#4387AA",         "#770000", "#373F41", "#602317",     "#8D9413",   "#c17924", "#3C7E16"];
+			var color = d3.scaleOrdinal()
+				.domain(locations)
+				.range(colors);
+
+			////////////////////////////////////////////////////////////
+			///////////////////// Read in data /////////////////////////
+			////////////////////////////////////////////////////////////
+						
+			d3.json("lotr_words_location.json", function (error, data) {
+				
+				//Create a group that already holds the data
+				var g = svg.append("g")
+				    .attr("transform", "translate(" + (width/2 + margin.left) + "," + (height/2 + margin.top) + ")")
+					.datum(loom(data));	
+
+				////////////////////////////////////////////////////////////
+				////////////////////// Draw outer arcs /////////////////////
+				////////////////////////////////////////////////////////////
+
+				var arcGroup = g.append("g").attr("class", "arc-outer-wrapper");
+
+				//Create a group per outer arc, which will contain the arc path + the location name & number of words text
+				var arcs = arcGroup.selectAll(".arc-wrapper")
+					.data(function(s) { return s.groups; })
+					.enter().append("g")
+					.attr("class", "arc-wrapper")
+					.each(function(d) { d.pullOutSize = (pullOutSize * ( d.startAngle > Math.PI + 1e-2 ? -1 : 1)) });
+
+				//Create the actual arc paths
+				var outerArcs = arcs.append("path")
+					.attr("class", "arc")
+					.style("fill", function(d) { return color(d.outername); })
+					.attr("d", arc)
+					.attr("transform", function(d, i) { 
+						return "translate(" + d.pullOutSize + ',' + 0 + ")"; //Pull the two slices apart
+					});
+						
+				////////////////////////////////////////////////////////////
+				//////////////////// Draw outer labels /////////////////////
+				////////////////////////////////////////////////////////////
+
+				//The text needs to be rotated with the offset in the clockwise direction
+				var outerLabels = arcs.append("g")
+					.each(function(d) { d.angle = ((d.startAngle + d.endAngle) / 2); })
+					.attr("class", "outer-labels")
+					.attr("text-anchor", function(d) { return d.angle > Math.PI ? "end" : null; })
+					.attr("transform", function(d,i) { 
+						var c = arc.centroid(d);
+						return "translate(" + (c[0] + d.pullOutSize) + "," + c[1] + ")"
+						+ "rotate(" + (d.angle * 180 / Math.PI - 90) + ")"
+						+ "translate(" + 26 + ",0)"
+						+ (d.angle > Math.PI ? "rotate(180)" : "")
+					})
+					
+				//The outer name
+				outerLabels.append("text")
+					.attr("class", "outer-label")
+					.attr("dy", ".35em")
+					.text(function(d,i){ return d.outername; });
+					
+				//The value below it
+				outerLabels.append("text")
+					.attr("class", "outer-label-value")
+					.attr("dy", "1.5em")
+					.text(function(d,i){ return numFormat(d.value) + " words"; });
+
+				////////////////////////////////////////////////////////////
+				//////////////////// Draw inner strings ////////////////////
+				////////////////////////////////////////////////////////////
+				
+				var stringGroup = g.append("g").attr("class", "string-wrapper");
+
+				//Draw the paths of the inner strings
+				var strings = stringGroup.selectAll("path")
+					.data(function(strings) { return strings; })
+					.enter().append("path")
+					.attr("class", "string")
+					.style("fill", function(d) { return d3.rgb( color(d.outer.outername) ).brighter(0.2) ; })
+					.style("opacity", 0.85)
+					.attr("d", string);
+					
+				////////////////////////////////////////////////////////////
+				//////////////////// Draw inner labels /////////////////////
+				////////////////////////////////////////////////////////////
+						
+				var innerLabelGroup = g.append("g").attr("class","inner-label-wrapper");
+
+				//Place the inner text labels in the middle
+				var innerLabels = innerLabelGroup.selectAll("text")
+					.data(function(s) { return s.innergroups; })
+					.enter().append("text")
+					.attr("class", "inner-label")
+					.attr("x", function(d,i) { return d.x; })
+					.attr("y", function(d,i) { return d.y; })
+					.attr("dy", ".35em")
+					.text(function(d,i) { return d.name; });
+				  		
+			});//d3.json
+		</script>
+	</body>
+</html>

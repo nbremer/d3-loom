@@ -6,6 +6,15 @@
 	(factory((global.d3 = global.d3 || {}),global.d3,global.d3,global.d3,global.d3));
 }(this, function (exports,d3Collection,d3Array,d3Interpolate,d3Path) { 'use strict';
 
+	function compareValue(compare) {
+		return function(a, b) {
+			return compare(
+				a.outer.value,
+				b.outer.value
+			);
+		};
+	}
+
 	function loom(data) {
 		
 		var pi$3 = Math.PI;
@@ -18,7 +27,7 @@
 			sortLooms = null,
 			emptyPerc = 0.2,
 			heightInner = 20,
-			widthInner = function() { return 30; },
+			widthInner = function(d,i) { return 30; },
 			value = function(d) { return d.value; },
 			inner = function(d) { return d.inner; },
 			outer = function(d) { return d.outer; };
@@ -50,6 +59,9 @@
 				s,
 				v,
 				sum,
+				padk,
+				section,
+				remain,
 				counter,
 				reverseOrder = false,
 				approxCenter;
@@ -79,40 +91,40 @@
 					d.sort(function(a, b) { return sortSubgroups( inner(data[i].values[a]), inner(data[i].values[b]) ); });
 				});
 					
-			//After which group are we past the center
-			//TODO: make something for if there is no nice split in two...
+			//After which group are we past the center, taking into account the padding
+			//TODO: make something for if there is no "nice" split in two...
+			padk = k * (padAngle/tau$3);
 			l = 0;
 			for(i = 0; i < n; i++) {
-				l += groupSums[groupIndex[i]];
-				if(l > k/2) {
-					approxCenter = groupIndex[i];
+				section = groupSums[groupIndex[i]] + padk;
+				l += section;
+				if(l > (k + n*padk)/2) {
+					//Check if the group should be added to left or right
+					remain = (k + n*padk) - (l-section);
+					approxCenter = remain/section < 0.5 ? groupIndex[i] : groupIndex[i-1];
 					break;
 				}//if
 			}//for i
-		
+
+
 			//How much should be added to k to make the empty part emptyPerc big of the total
 			emptyk = k * emptyPerc / (1 - emptyPerc);
 			k += emptyk;
 
 			// Convert the sum to scaling factor for [0, 2pi].
 			k = max$1(0, tau$3 - padAngle * n) / k;
-			dx = k ? padAngle : tau$3 / n;
+			dx = k ? padAngle : (tau$3 / n);
 	  
 			// Compute the start and end angle for each group and subgroup.
 			// Note: Opera has a bug reordering object literal properties!
 			subgroups = new Array(numSubGroups);
-			x = emptyk * 0.25 * k; //quarter of the empty part //0;
+			x = emptyk * 0.25 * k; //starting with quarter of the empty part to the side;
 			counter = 0;
 			for(i = 0; i < n; i++) {
 				var di = groupIndex[i],
 					outername = data[di].key;
 				
-				if(approxCenter === di) { 
-					x = x + emptyk * 0.5 * k; 
-				}//if
 				x0 = x;
-				//If you've crossed the bottom, reverse the order of the inner strings
-				if(x > pi$3) reverseOrder = true;
 				s = subgroupIndex[di].length;
 				for(j = 0; j < s; j++) {
 					var dj = reverseOrder ? subgroupIndex[di][(s-1)-j] : subgroupIndex[di][j],
@@ -127,7 +139,8 @@
 							endAngle: a1,
 							value: v,
 							outername: outername,
-							innername: innername
+							innername: innername,
+							groupStartAngle: x0
 						};
 					
 					//Check and save the unique inner names
@@ -145,19 +158,22 @@
 					value: groupSums[di],
 					outername: outername
 				};
-				x += dx;		
+				x += dx;
+				//If this is the approximate center, add half of the empty piece for the bottom
+				if(approxCenter === di) x = x + emptyk * 0.5 * k;	
+				//If you've crossed the bottom, reverse the order of the inner strings
+				if(x > pi$3) reverseOrder = true;	
 			}//for i
 
 			//Sort the inner groups in the same way as the strings
-			uniqueInner.sort(function(a, b) { return sortSubgroups( a.name, b.name ); });
+			if(sortSubgroups) uniqueInner.sort(function(a, b) { return sortSubgroups( a.name, b.name ); });
 		
 			//Find x and y locations of the inner categories
-			//TODO: make x depend on length of inner name	
 			m = uniqueInner.length
 			for(i = 0; i < m; i++) {
 				uniqueInner[i].x = 0;
 				uniqueInner[i].y = -m*heightInner/2 + i*heightInner;
-				uniqueInner[i].offset = widthInner(uniqueInner[i].name, i, uniqueInner);
+				uniqueInner[i].offset = widthInner(uniqueInner[i].name,i);
 			}//for i
 	  			
 			//Generate bands for each (non-empty) subgroup-subgroup link
@@ -251,6 +267,7 @@
 		var inner = function (d) { return d.inner; },
 			outer = function (d) { return d.outer; },
 			radius = function (d) { return 100; },
+			groupStartAngle = function (d) { return d.groupStartAngle; },
 			startAngle = function (d) { return d.startAngle; },
 			endAngle = function (d) { return d.endAngle; },
 			x = function (d) { return d.x; },
@@ -267,6 +284,7 @@
 				inn = inner.apply(this, argv),
 				sr = +radius.apply(this, (argv[0] = out, argv)),
 				sa0 = startAngle.apply(this, argv) - halfPi$2,
+				sga0 = groupStartAngle.apply(this, argv) - halfPi$2,
 				sa1 = endAngle.apply(this, argv) - halfPi$2,
 				sx0 = sr * cos(sa0),
 				sy0 = sr * sin(sa0),
@@ -285,7 +303,7 @@
 				pulloutContext;
 			
 			//Does the group lie on the left side
-			leftHalf = sa0+halfPi$2 > pi$3 && sa0+halfPi$2 < tau$3;
+			leftHalf = sga0+halfPi$2 > pi$3 && sga0+halfPi$2 < tau$3;
 			//If the group lies on the other side, switch the inner point offset
 			if(leftHalf) toffset = -toffset;
 			tx = tx + toffset;
@@ -342,6 +360,10 @@
 
 		string.radius = function(_) {
 			return arguments.length ? (radius = typeof _ === "function" ? _ : constant$11(+_), string) : radius;
+		};
+
+		string.groupStartAngle = function(_) {
+			return arguments.length ? (groupStartAngle = typeof _ === "function" ? _ : constant$11(+_), string) : groupStartAngle;
 		};
 
 		string.startAngle = function(_) {

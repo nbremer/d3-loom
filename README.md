@@ -76,11 +76,12 @@ Both the inner and outer subgroup are also objects. The inner has the following 
 
 And the outer has the following properties:
 
-* `startAngle` - the [start angle](#string_startAngle) of the arc in radians
-* `endAngle` - the [end angle](#string_endAngle) of the arc in radians
-* `value` - the numeric [value](#loom_value) of the arc
-* `index` - the zero-based [sorted index](#loom_sortGroups) of the arc
-* `subindex` - the zero-based [sorted sub-index](#loom_sortSubgroups) of the arc
+* `groupStartAngle` - the [start angle](#string_groupStartAngle) of the outer group to which the specific string belongs
+* `startAngle` - the [start angle](#string_startAngle) of the string at the outer edge in radians
+* `endAngle` - the [end angle](#string_endAngle) of the string at the outer edge in radians
+* `value` - the numeric [value](#loom_value) of the string
+* `index` - the zero-based [sorted index](#loom_sortGroups) of the group
+* `subindex` - the zero-based [sorted sub-index](#loom_sortSubgroups) of the string within the group
 * `innername` - the [name](#loom_inner) of the connected inner entity
 * `outername` - the [name](#loom_outer) of the outer entity
 
@@ -141,11 +142,11 @@ function value(d) {
 
 <a href="#loom_heightInner" name="loom_heightInner">#</a> <i>loom</i>.<b>heightInner</b>([<i>height</i>]) [<>](https://github.com/nbremer/d3-loom/blob/master/loom.js#L211 "Source")
 
-This *height* gives the vertical distance between the inner entities in the center. It is the value that determines the width of the strings on the outside. If *height* is specified, sets the heightInner to the specified number and returns this loom generator. If height is not specified, returns the current heightInner value, which defaults to 20 pixels.
+This *height* gives the vertical distance between the inner entities in the center. If *height* is specified, sets the heightInner to the specified number and returns this loom generator. If height is not specified, returns the current heightInner value, which defaults to 20 pixels.
 
 <a href="#loom_widthInner" name="loom_widthInner">#</a> <i>loom</i>.<b>widthInner</b>([<i>width</i>]) [<>](https://github.com/nbremer/d3-loom/blob/master/loom.js#L215 "Source")
 
-This *width* gives the horizontal distance between the inner endpoints of the strings in the center. It is the value that determines the width of the gap that is created so the text of the inner entities does not overlap the strings. If *width* is specified, sets the widthInner to the specified function or number and returns this loom generator. If width is not specified, returns the current widthInner value, which defaults to 30 pixels.
+This *width* gives the horizontal distance between the inner endpoints of the strings in the center. It is the value that determines the width of the gap that is created so the text of the inner entities does not overlap the strings. If *width* is specified, sets the widthInner to the specified function or number and returns this loom generator. However, note that this function receives a *d* value that contains the string of the entity in the center (the *inner*). You can therefore make the width depend on the length of the *inner*'s string. If width is not specified, returns the current widthInner value, which defaults to 30 pixels.
 
 <a href="#loom_emptyPerc" name="loom_emptyPerc">#</a> <i>loom</i>.<b>emptyPerc</b>([<i>value</i>]) [<>](https://github.com/nbremer/d3-loom/blob/master/loom.js#L219 "Source")
 
@@ -157,11 +158,11 @@ If *compare* is specified, sets the group comparator to the specified function o
 
 <a href="#loom_sortSubgroups" name="loom_sortSubgroups">#</a> <i>loom</i>.<b>sortSubgroups</b>([<i>compare</i>]) [<>](https://github.com/nbremer/d3-loom/blob/master/loom.js#L227 "Source")
 
-If *compare* is specified, sets the subgroup comparator to the specified function or null and returns this loom layout. If *compare* is not specified, returns the current subgroup comparator, which defaults to null. If the subgroup comparator is non-null, it is used to sort the subgroups (i.e. the separate strings) within each outer entity by their value. See also [d3.ascending](https://github.com/d3/d3-array#ascending) and [d3.descending](https://github.com/d3/d3-array#descending).
+If *compare* is specified, sets the subgroup comparator to the specified function or null and returns this loom layout. If *compare* is not specified, returns the current subgroup comparator, which defaults to null. If the subgroup comparator is non-null, it is used to sort the subgroups (i.e. the separate strings) within each outer entity by their value. See also [d3.ascending](https://github.com/d3/d3-array#ascending) and [d3.descending](https://github.com/d3/d3-array#descending). This sorting applies to both the order of the strings on the outer edge and the vertical order of the inner entities. It is advised to supply a subGroup sorting whenever there is not already a sorting applied to the underlying data, otherwise the inner entities and the strings will be drawn in the exact order as they appear in the data, typically resulting in a lot of overlapping strings.
 
 <a href="#loom_sortLooms" name="loom_sortLooms">#</a> <i>loom</i>.<b>sortLooms</b>([<i>compare</i>]) [<>](https://github.com/nbremer/d3-loom/blob/master/loom.js#L231 "Source")
 
-If *compare* is specified, sets the loom comparator to the specified function or null and returns this loom layout. If *compare* is not specified, returns the current loom comparator, which defaults to null. If the loom comparator is non-null, it is used to sort the [strings](#_loom) by their value; this only affects the *z*-order of these inner strings. See also [d3.ascending](https://github.com/d3/d3-array#ascending) and [d3.descending](https://github.com/d3/d3-array#descending).
+If *compare* is specified, sets the loom comparator to the specified function or null and returns this loom layout. If *compare* is not specified, returns the current loom comparator, which defaults to null. If the loom comparator is non-null, it is used to sort the [strings](#_loom) by their value; this only affects the *z*-order of these inner strings (i.e. how they overlap). See also [d3.ascending](https://github.com/d3/d3-array#ascending) and [d3.descending].(https://github.com/d3/d3-array#descending).
 
 <a href="#string" name="string">#</a> d3.<b>string</b>() [<>](https://github.com/nbremer/d3-loom/blob/master/loom.js#L240 "Source")
 
@@ -210,6 +211,18 @@ function outer(d) {
 ```
 
 When the string generator is used in conjunction with the *loom*, the resulting loom array will contain an *outer* object. Thus this accessor function does not have to be set separately, but just use the default.
+
+<a href="#string_groupStartAngle" name="string_groupStartAngle">#</a> <i>string</i>.<b>groupStartAngle</b>([<i>angle</i>]) [<>](https://github.com/nbremer/d3-loom/blob/master/loom.js#L247 "Source")
+
+If *angle* is specified, sets the start angle accessor to the specified function and returns this string generator. If *angle* is not specified, returns the current start angle accessor, which defaults to:
+
+```js
+function groupStartAngle(d) {
+  return d.groupStartAngle;
+}
+```
+
+The *angle* is specified in radians, with 0 at -*y* (12 o'clock) and positive angles proceeding clockwise. This separate assessor is needed to make sure that even when an *emptyPerc* is set, all the strings belonging to the same outer group will be drawn at the same side. It's best make this assessor similar in "function" to the *startAngle* below (i.e. if a constant is added onto the *startAngle* to rotate the whole, then the same constant should be added to the *groupStartAngle*). When the string generator is used in conjunction with the *loom*, the resulting loom array will contain an *groupStartAngle* value within the *outer* object. In that case this accessor function does not have to be set separately, but just use the default.
 
 <a href="#string_startAngle" name="string_startAngle">#</a> <i>string</i>.<b>startAngle</b>([<i>angle</i>]) [<>](https://github.com/nbremer/d3-loom/blob/master/loom.js#L247 "Source")
 
