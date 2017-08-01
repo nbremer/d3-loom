@@ -8,6 +8,9 @@ This is a d3 plugin to create a "loom" visualization. I don't actually know node
 
 The loom layout is meant to create a chart with a group of entities in the center and different group of entities on the outside. They are connected by *strings* where the thickness of the string on the outside represents the connection (i.e. value) of the inner and outer entity.
 
+Or in the words of Robert Kosara
+> One chart to rule them all, one chart to find them; one chart to bring them all and in the darkness bind them 
+
 For example, in the above image, the inner entities are the characters of the Fellowship in the Lord of the Rings movies. The outer entities are the locations in Middle Earth where the movie takes place. The connection/value is the number of words spoken by each character at each location.
 
 Since this layout was transformed from d3's [chord diagram](https://github.com/d3/d3-chord/blob/master/README.md) many of the below API references will be similar to those from the chord diagram for the *loom* and similar to the ribbon functions for the *strings*.
