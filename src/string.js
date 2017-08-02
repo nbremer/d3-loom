@@ -1,9 +1,9 @@
 /* global d3 */
+
 import constant from './constant';
 
 export default function string() {
   const slice = Array.prototype.slice;
-
   const cos = Math.cos;
   const sin = Math.sin;
   const halfPi = Math.PI / 2;
@@ -104,7 +104,7 @@ export default function string() {
       return `${buffer}` || null;
     }
     return null;
-  } // function stringLayout
+  }
 
   stringLayout.radius = function (_) {
     return arguments.length
