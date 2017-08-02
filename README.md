@@ -17,11 +17,20 @@ Since this layout was transformed from d3's [chord diagram](https://github.com/d
 
 ## Installing
 
-You must include the [d3 library](http://d3js.org/) before including the loom file. Then you can add the loom.js file to your website
+If you use NPM, say 
+
+```
+npm install d3-loom
+```
+
+to add [d3-loom](https://www.npmjs.com/package/d3-loom) to your project. AMD, CommonJS, and vanilla environments are supported. 
+
+Otherwise, download the [latest build](build/). **d3-loom** depends on **d3**, so be sure to include a script tag with the [d3 library](http://d3js.org/) before including `d3-loom.js`. In vanilla evnironment, a d3 global is exported:
+
 
 ```html
 <script src="https://d3js.org/d3.v4.min.js"></script>
-<script src="loom.js"></script>
+<script src="d3-loom.js"></script>
 
 <script>
 
