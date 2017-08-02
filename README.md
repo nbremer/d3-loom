@@ -17,10 +17,16 @@ Since this layout was transformed from d3's [chord diagram](https://github.com/d
 
 ## Installing
 
-If you use NPM, say 
+If you use a package manager like [npm](https://www.npmjs.com/) or [yarn](https://yarnpkg.com/en/), say 
 
 ```
 npm install d3-loom
+```
+
+or 
+
+```
+yarn add d3-loom
 ```
 
 to add [d3-loom](https://www.npmjs.com/package/d3-loom) to your project. AMD, CommonJS, and vanilla environments are supported. 
