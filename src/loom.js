@@ -187,9 +187,7 @@ export default function loom() {
       } // for j
     } // for i
 
-    const returnValue = sortLooms ? looms.sort(sortLooms) : looms;
-    console.log('returnValue from loom', returnValue); // eslint-disable-line
-    return returnValue;
+    return sortLooms ? looms.sort(sortLooms) : looms;
   } // loomLayout
 
   function searchTerm(term, property, arrayToSearch) {

@@ -22,11 +22,9 @@ export default function string() {
   let thicknessInner = 0;
   let context = null;
 
-  function stringLayout() {
-    // console.log('arguments from stringLayout', arguments); // eslint-disable-line
+  function stringLayout(...args) {
     let buffer;
-    const argv = slice.call(arguments); // eslint-disable-line
-    console.log('argv', argv); // eslint-disable-line
+    const argv = slice.call(args);
     const out = outer.apply(this, argv);
     const inn = inner.apply(this, argv);
     argv[0] = out;
@@ -41,15 +39,9 @@ export default function string() {
     argv[0] = inn;
     // 'tr' is assigned a value but never used
     // const tr = +radius.apply(this, (argv));
-    // console.log('x', x); // eslint-disable-line
-    // console.log('y', y); // eslint-disable-line
-    // console.log('this', this); // eslint-disable-line
     let tx = x.apply(this, argv);
     const ty = y.apply(this, argv);
     let toffset = offset.apply(this, argv);
-    // console.log('tx', tx); // eslint-disable-line
-    // console.log('ty', ty); // eslint-disable-line
-    // console.log('toffset', toffset); // eslint-disable-line
     let xco;
     let yco;
     let xci;
@@ -72,13 +64,10 @@ export default function string() {
     const pulloutContext = (leftHalf ? -1 : 1) * pullout;
     sx0 += pulloutContext;
     sx1 += pulloutContext;
-
     // Start at smallest angle of outer arc
     context.moveTo(sx0, sy0);
-    // console.log('context', context); // eslint-disable-line
     // Circular part along the outer arc
     context.arc(pulloutContext, 0, sr, sa0, sa1);
-    // console.log('context', context); // eslint-disable-line
     // From end outer arc to center (taking into account the pullout)
     xco = d3.interpolateNumber(pulloutContext, sx1)(0.5);
     yco = d3.interpolateNumber(0, sy1)(0.5);
@@ -91,11 +80,8 @@ export default function string() {
       yci = ty + theight / 2;
     } // else
     context.bezierCurveTo(xco, yco, xci, yci, tx, ty + theight / 2);
-    // console.log('context after bezierCurveTo', context); // eslint-disable-line
     // Draw a straight line up/down (depending on the side of the circle)
-    // console.log(`tx ${tx} ty ${ty}, theight ${theight}`); // eslint-disable-line
     context.lineTo(tx, ty - theight / 2);
-    // console.log('context after lineTo', context); // eslint-disable-line
     // From center (taking into account the pullout) to start of outer arc
     xco = d3.interpolateNumber(pulloutContext, sx0)(0.5);
     yco = d3.interpolateNumber(0, sy0)(0.5);
@@ -108,12 +94,9 @@ export default function string() {
       yci = ty - theight / 2;
     } // else
     context.bezierCurveTo(xci, yci, xco, yco, sx0, sy0);
-    // console.log('context', context); // eslint-disable-line
     // Close path
     context.closePath();
-    // console.log('context', context); // eslint-disable-line
 
-    // console.log('buffer from string', buffer); // eslint-disable-line
     if (buffer) {
       context = null;
       return `${buffer}` || null;
