@@ -3,8 +3,9 @@
 
 /* global d3 */
 import compareValue from './compare-value';
+import constant from './constant';
 
-export default function loom(data) {
+export default function loom() {
   const tau = Math.PI * 2;
 
   let padAngle = 0;
@@ -18,9 +19,9 @@ export default function loom(data) {
   let inner = d => d.inner;
   let outer = d => d.outer;
 
-  function loomLayout() {
+  function loomLayout(layoutData) {
     // Nest the data on the outer variable
-    data = d3.nest().key(outer).entries(data);
+    const data = d3.nest().key(outer).entries(layoutData);
 
     const n = data.length;
 
@@ -39,7 +40,6 @@ export default function loom(data) {
     let k;
     let x;
     let x0;
-
     let j;
     let l;
     let s;
@@ -73,7 +73,7 @@ export default function loom(data) {
     if (sortSubgroups) {
       subgroupIndex.forEach((d, i) => {
         d.sort((a, b) =>
-          sortSubgroups(inner(data[i].values[a]), inner(data[i].values[b])),
+          sortSubgroups(inner(data[i].values[a]), inner(data[i].values[b]))
         );
       });
     }
@@ -132,7 +132,7 @@ export default function loom(data) {
           value: v,
           outername,
           innername,
-          groupStartAngle: x0,
+          groupStartAngle: x0
         };
 
         // Check and save the unique inner names
@@ -148,7 +148,7 @@ export default function loom(data) {
         startAngle: x0,
         endAngle: x,
         value: groupSums[di],
-        outername,
+        outername
       };
       x += dx;
       // If this is the approximate center, add half of the empty piece for the bottom
@@ -187,7 +187,9 @@ export default function loom(data) {
       } // for j
     } // for i
 
-    return sortLooms ? looms.sort(sortLooms) : looms;
+    const returnValue = sortLooms ? looms.sort(sortLooms) : looms;
+    console.log('returnValue from loom', returnValue); // eslint-disable-line
+    return returnValue;
   } // loomLayout
 
   function searchTerm(term, property, arrayToSearch) {
@@ -199,41 +201,35 @@ export default function loom(data) {
     return null;
   } // searchTerm
 
-  function constant$11(x) {
-    return () => x;
-  }
-
-  loomLayout.padAngle = function (_) {
+  loomLayout.padAngle = function(_) {
     return arguments.length
       ? ((padAngle = Math.max(0, _)), loomLayout)
       : padAngle;
   };
 
-  loomLayout.inner = function (_) {
+  loomLayout.inner = function(_) {
     return arguments.length ? ((inner = _), loomLayout) : inner;
   };
 
-  loomLayout.outer = function (_) {
+  loomLayout.outer = function(_) {
     return arguments.length ? ((outer = _), loomLayout) : outer;
   };
 
-  loomLayout.value = function (_) {
+  loomLayout.value = function(_) {
     return arguments.length ? ((value = _), loomLayout) : value;
   };
 
-  loomLayout.heightInner = function (_) {
+  loomLayout.heightInner = function(_) {
     return arguments.length ? ((heightInner = _), loomLayout) : heightInner;
   };
 
-  loomLayout.widthInner = function (_) {
+  loomLayout.widthInner = function(_) {
     return arguments.length
-      ? ((widthInner = typeof _ === 'function'
-          ? _
-          : constant$11(+_)), loomLayout)
+      ? ((widthInner = typeof _ === 'function' ? _ : constant(+_)), loomLayout)
       : widthInner;
   };
 
-  loomLayout.emptyPerc = function (_) {
+  loomLayout.emptyPerc = function(_) {
     return arguments.length
       ? ((emptyPerc = _ < 1
           ? Math.max(0, _)
@@ -241,15 +237,15 @@ export default function loom(data) {
       : emptyPerc;
   };
 
-  loomLayout.sortGroups = function (_) {
+  loomLayout.sortGroups = function(_) {
     return arguments.length ? ((sortGroups = _), loomLayout) : sortGroups;
   };
 
-  loomLayout.sortSubgroups = function (_) {
+  loomLayout.sortSubgroups = function(_) {
     return arguments.length ? ((sortSubgroups = _), loomLayout) : sortSubgroups;
   };
 
-  loomLayout.sortLooms = function (_) {
+  loomLayout.sortLooms = function(_) {
     return arguments.length
       ? (_ == null
           ? (sortLooms = null)

@@ -22,16 +22,15 @@ export default function string() {
   let thicknessInner = 0;
   let context = null;
 
-  function stringLayout(...args) {
+  function stringLayout() {
+    // console.log('arguments from stringLayout', arguments); // eslint-disable-line
     let buffer;
-
-    // Does the group lie on the left side
-
-    const argv = slice.call(args);
+    const argv = slice.call(arguments); // eslint-disable-line
+    console.log('argv', argv); // eslint-disable-line
     const out = outer.apply(this, argv);
-    // 'inn' is assigned a value but never used
-    // const inn = inner.apply(this, argv);
-    const sr = +radius.apply(this, ((argv[0] = out), argv));
+    const inn = inner.apply(this, argv);
+    argv[0] = out;
+    const sr = +radius.apply(this, argv);
     const sa0 = startAngle.apply(this, argv) - halfPi;
     const sga0 = groupStartAngle.apply(this, argv) - halfPi;
     const sa1 = endAngle.apply(this, argv) - halfPi;
@@ -39,15 +38,24 @@ export default function string() {
     const sy0 = sr * sin(sa0);
     let sx1 = sr * cos(sa1);
     const sy1 = sr * sin(sa1);
+    argv[0] = inn;
     // 'tr' is assigned a value but never used
-    // const tr = +radius.apply(this, ((argv[0] = inn), argv));
+    // const tr = +radius.apply(this, (argv));
+    // console.log('x', x); // eslint-disable-line
+    // console.log('y', y); // eslint-disable-line
+    // console.log('this', this); // eslint-disable-line
     let tx = x.apply(this, argv);
     const ty = y.apply(this, argv);
     let toffset = offset.apply(this, argv);
+    // console.log('tx', tx); // eslint-disable-line
+    // console.log('ty', ty); // eslint-disable-line
+    // console.log('toffset', toffset); // eslint-disable-line
     let xco;
     let yco;
     let xci;
     let yci;
+
+    // Does the group lie on the left side;
     const leftHalf = sga0 + halfPi > Math.PI && sga0 + halfPi < tau;
     // If the group lies on the other side, switch the inner point offset
     if (leftHalf) toffset = -toffset;
@@ -58,7 +66,6 @@ export default function string() {
     if (!context) {
       buffer = d3.path();
       context = buffer;
-      return context;
     }
 
     // Change the pullout based on where the stringLayout is
@@ -68,8 +75,10 @@ export default function string() {
 
     // Start at smallest angle of outer arc
     context.moveTo(sx0, sy0);
+    // console.log('context', context); // eslint-disable-line
     // Circular part along the outer arc
     context.arc(pulloutContext, 0, sr, sa0, sa1);
+    // console.log('context', context); // eslint-disable-line
     // From end outer arc to center (taking into account the pullout)
     xco = d3.interpolateNumber(pulloutContext, sx1)(0.5);
     yco = d3.interpolateNumber(0, sy1)(0.5);
@@ -82,8 +91,11 @@ export default function string() {
       yci = ty + theight / 2;
     } // else
     context.bezierCurveTo(xco, yco, xci, yci, tx, ty + theight / 2);
+    // console.log('context after bezierCurveTo', context); // eslint-disable-line
     // Draw a straight line up/down (depending on the side of the circle)
+    // console.log(`tx ${tx} ty ${ty}, theight ${theight}`); // eslint-disable-line
     context.lineTo(tx, ty - theight / 2);
+    // console.log('context after lineTo', context); // eslint-disable-line
     // From center (taking into account the pullout) to start of outer arc
     xco = d3.interpolateNumber(pulloutContext, sx0)(0.5);
     yco = d3.interpolateNumber(0, sy0)(0.5);
@@ -96,9 +108,12 @@ export default function string() {
       yci = ty - theight / 2;
     } // else
     context.bezierCurveTo(xci, yci, xco, yco, sx0, sy0);
+    // console.log('context', context); // eslint-disable-line
     // Close path
     context.closePath();
+    // console.log('context', context); // eslint-disable-line
 
+    // console.log('buffer from string', buffer); // eslint-disable-line
     if (buffer) {
       context = null;
       return `${buffer}` || null;
@@ -106,13 +121,13 @@ export default function string() {
     return null;
   }
 
-  stringLayout.radius = function (_) {
+  stringLayout.radius = function(_) {
     return arguments.length
       ? ((radius = typeof _ === 'function' ? _ : constant(+_)), stringLayout)
       : radius;
   };
 
-  stringLayout.groupStartAngle = function (_) {
+  stringLayout.groupStartAngle = function(_) {
     return arguments.length
       ? ((groupStartAngle = typeof _ === 'function'
           ? _
@@ -120,7 +135,7 @@ export default function string() {
       : groupStartAngle;
   };
 
-  stringLayout.startAngle = function (_) {
+  stringLayout.startAngle = function(_) {
     return arguments.length
       ? ((startAngle = typeof _ === 'function'
           ? _
@@ -128,43 +143,43 @@ export default function string() {
       : startAngle;
   };
 
-  stringLayout.endAngle = function (_) {
+  stringLayout.endAngle = function(_) {
     return arguments.length
       ? ((endAngle = typeof _ === 'function' ? _ : constant(+_)), stringLayout)
       : endAngle;
   };
 
-  stringLayout.x = function (_) {
+  stringLayout.x = function(_) {
     return arguments.length ? ((x = _), stringLayout) : x;
   };
 
-  stringLayout.y = function (_) {
+  stringLayout.y = function(_) {
     return arguments.length ? ((y = _), stringLayout) : y;
   };
 
-  stringLayout.offset = function (_) {
+  stringLayout.offset = function(_) {
     return arguments.length ? ((offset = _), stringLayout) : offset;
   };
 
-  stringLayout.thicknessInner = function (_) {
+  stringLayout.thicknessInner = function(_) {
     return arguments.length
       ? ((thicknessInner = _), stringLayout)
       : thicknessInner;
   };
 
-  stringLayout.inner = function (_) {
+  stringLayout.inner = function(_) {
     return arguments.length ? ((inner = _), stringLayout) : inner;
   };
 
-  stringLayout.outer = function (_) {
+  stringLayout.outer = function(_) {
     return arguments.length ? ((outer = _), stringLayout) : outer;
   };
 
-  stringLayout.pullout = function (_) {
+  stringLayout.pullout = function(_) {
     return arguments.length ? ((pullout = _), stringLayout) : pullout;
   };
 
-  stringLayout.context = function (_) {
+  stringLayout.context = function(_) {
     return arguments.length
       ? ((context = _ == null ? null : _), stringLayout)
       : context;
