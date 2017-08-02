@@ -1,8 +1,6 @@
 # d3-loom
 
-For an extensive explanation of the effects of all the settings decribed farther below, please see the [blog/tutorial I wrote about the loom here](https://www.visualcinnamon.com/2017/08/d3-loom.html).
-
-This is a d3 plugin to create a "loom" visualization. I don't actually know node.js, thereby no npm, so if you feel this repo isn't a fully fledged plugin, because it's missing a lot of files (and isn't on npm), I'm fine with that. I just wanted to share a way for others to make use of a new chart layout in d3 that was within my abilities (but any help in turning this into a proper plugin would be appreciated!).
+This is a d3 plugin to create a "loom" visualization. For an extensive explanation of the effects of all the settings decribed farther below, please see the [blog/tutorial I wrote about the loom here](https://www.visualcinnamon.com/2017/08/d3-loom.html).
 
 [![The words spoken by the Fellowship member during all 3 movies](lotr.png "The words spoken by the Fellowship member during all 3 movies")](https://bl.ocks.org/nbremer/4530f11952a3ef7e007ad6ef93d5adb3)
 
