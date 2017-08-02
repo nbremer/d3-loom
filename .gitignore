@@ -1,4 +1,4 @@
 .DS_Store
 node_modules
 npm-debug.log
-src/d3-loom-build-target.js
+src/*.bak

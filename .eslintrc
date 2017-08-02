@@ -2,6 +2,9 @@
   "extends": "airbnb-base",
   "rules": {
     "no-param-reassign": "off",
-    "no-use-before-define": "off"
+    "no-use-before-define": "off",
+    "func-names": "off",
+    "no-return-assign": "off",
+    "no-mixed-operators": "off"
   }
 }
