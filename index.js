@@ -1,1 +1,2 @@
-export { loom, string } from './src/loom';
+export loom from './src/loom';
+export string from './src/string';
