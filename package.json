@@ -1,6 +1,6 @@
 {
   "name": "d3-loom",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "a d3 plugin to create a loom chart layout",
   "keywords": [
     "d3",
