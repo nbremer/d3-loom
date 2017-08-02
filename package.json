@@ -21,7 +21,7 @@
     "lint": "eslint src",
     "pretest": "npm run lint && rm -rf build && mkdir build && rollup -c",
     "build": "npm run pretest",
-    "prepublish": "uglifyjs build/d3-loom.js -c -m -o build/d3-loom.min.js",
+    "prepack": "uglifyjs build/d3-loom.js -c -m -o build/d3-loom.min.js",
     "postpublish": "git push; git push --tags"
   },
   "devDependencies": {
