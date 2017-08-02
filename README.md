@@ -180,7 +180,7 @@ If *compare* is specified, sets the subgroup comparator to the specified functio
 
 <a href="#loom_sortLooms" name="loom_sortLooms">#</a> <i>loom</i>.<b>sortLooms</b>([<i>compare</i>])
 
-If *compare* is specified, sets the loom comparator to the specified function or null and returns this loom layout. If *compare* is not specified, returns the current loom comparator, which defaults to null. If the loom comparator is non-null, it is used to sort the [strings](#_loom) by their value; this only affects the *z*-order of these inner strings (i.e. how they overlap). See also [d3.ascending](https://github.com/d3/d3-array#ascending) and [d3.descending].(https://github.com/d3/d3-array#descending).
+If *compare* is specified, sets the loom comparator to the specified function or null and returns this loom layout. If *compare* is not specified, returns the current loom comparator, which defaults to null. If the loom comparator is non-null, it is used to sort the strings by their value; this only affects the *z*-order of these inner strings (i.e. how they overlap). See also [d3.ascending](https://github.com/d3/d3-array#ascending) and [d3.descending].(https://github.com/d3/d3-array#descending).
 
 <a href="#string" name="string">#</a> d3.<b>string</b>()
 
