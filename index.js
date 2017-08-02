@@ -1,1 +1,1 @@
-export { default as loom } from './src/loom';
+export { loom, string } from './src/loom';
